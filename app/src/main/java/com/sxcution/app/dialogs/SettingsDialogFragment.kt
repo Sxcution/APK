@@ -36,6 +36,8 @@ class SettingsDialogFragment : DialogFragment() {
     private lateinit var switchZoomWithMarker: Switch
     private lateinit var switchBearingRotation: Switch
     private lateinit var btnClose: Button
+    private lateinit var btnBackup: Button
+    private lateinit var btnRestore: Button
     
     // Callback interface
     interface OnSettingsChangedListener {
@@ -76,6 +78,8 @@ class SettingsDialogFragment : DialogFragment() {
         switchZoomWithMarker = view.findViewById(R.id.switch_zoom_with_marker)
         switchBearingRotation = view.findViewById(R.id.switch_bearing_rotation)
         btnClose = view.findViewById(R.id.btn_close_settings)
+        btnBackup = view.findViewById(R.id.btn_backup_places)
+        btnRestore = view.findViewById(R.id.btn_restore_places)
         
         setupViews()
         loadSettings()
@@ -132,6 +136,16 @@ class SettingsDialogFragment : DialogFragment() {
         btnClose.setOnClickListener {
             dismiss()
         }
+        
+        // Backup button
+        btnBackup.setOnClickListener {
+            backupPlaces()
+        }
+        
+        // Restore button
+        btnRestore.setOnClickListener {
+            restorePlaces()
+        }
     }
     
     private fun loadSettings() {
@@ -180,6 +194,65 @@ class SettingsDialogFragment : DialogFragment() {
             .apply()
     }
     
+    private fun backupPlaces() {
+        try {
+            val repository = com.sxcution.app.repository.SavedPlacesRepository(requireContext())
+            val places = repository.getAllPlaces()
+            if (places.isEmpty()) {
+                android.widget.Toast.makeText(context, "No saved places to backup", android.widget.Toast.LENGTH_SHORT).show()
+                return
+            }
+            
+            val gson = com.google.gson.Gson()
+            val json = gson.toJson(places)
+            
+            val fileName = "sxcution_places_backup.json"
+            val downloadDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS)
+            
+            // Ensure download directory exists
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+            
+            val backupFile = java.io.File(downloadDir, fileName)
+            backupFile.writeText(json, Charsets.UTF_8)
+            
+            android.widget.Toast.makeText(context, "Backup saved to Download/${fileName}", android.widget.Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            android.widget.Toast.makeText(context, "Backup failed: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    private fun restorePlaces() {
+        try {
+            val fileName = "sxcution_places_backup.json"
+            val downloadDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS)
+            val backupFile = java.io.File(downloadDir, fileName)
+            
+            if (!backupFile.exists()) {
+                android.widget.Toast.makeText(context, "Backup file Download/${fileName} not found", android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
+            
+            val json = backupFile.readText(Charsets.UTF_8)
+            val gson = com.google.gson.Gson()
+            val type = object : com.google.gson.reflect.TypeToken<List<com.sxcution.app.data.SavedPlace>>() {}.type
+            val restoredPlaces: List<com.sxcution.app.data.SavedPlace> = gson.fromJson(json, type) ?: emptyList()
+            
+            if (restoredPlaces.isEmpty()) {
+                android.widget.Toast.makeText(context, "Backup file is empty", android.widget.Toast.LENGTH_SHORT).show()
+                return
+            }
+            
+            val repository = com.sxcution.app.repository.SavedPlacesRepository(requireContext())
+            val addedCount = repository.savePlaces(restoredPlaces)
+            
+            android.widget.Toast.makeText(context, "Restored $addedCount new places successfully", android.widget.Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            android.widget.Toast.makeText(context, "Restore failed: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onDismiss(dialog: android.content.DialogInterface) {
         super.onDismiss(dialog)
         // Clean up any resources if needed

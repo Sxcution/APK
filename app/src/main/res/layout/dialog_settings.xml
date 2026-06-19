@@ -138,6 +138,38 @@
 
     </LinearLayout>
 
+    <!-- Backup & Restore places -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+
+        <Button
+            android:id="@+id/btn_backup_places"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Backup"
+            android:textColor="@color/white"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/primary_color"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_restore_places"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Restore"
+            android:textColor="@color/white"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/primary_color"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
     <!-- Close Button -->
     <Button
         android:id="@+id/btn_close_settings"

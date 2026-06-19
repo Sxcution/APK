@@ -561,7 +561,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 btnStartStop.text = "Stop"
                 btnStartStop.backgroundTintList = ContextCompat.getColorStateList(this@MainActivity, android.R.color.holo_red_dark)
                 statusText.text = "Location Service Running"
-                statusText.setTextColor(ContextCompat.getColor(this@MainActivity, android.R.color.holo_green_dark))
+                statusText.setTextColor(android.graphics.Color.parseColor("#00ff00"))
             } else {
                 btnStartStop.text = "Start"
                 btnStartStop.backgroundTintList = ContextCompat.getColorStateList(this@MainActivity, R.color.primary_color)

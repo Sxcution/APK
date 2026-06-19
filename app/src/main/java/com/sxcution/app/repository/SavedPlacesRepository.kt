@@ -29,12 +29,29 @@ class SavedPlacesRepository(private val context: Context) {
         return gson.fromJson(json, type) ?: emptyList()
     }
     
-    fun deletePlace(placeId: String) {
+        fun deletePlace(placeId: String) {
         val places = getAllPlaces().toMutableList()
         places.removeAll { it.id == placeId }
         
         val json = gson.toJson(places)
         sharedPreferences.edit().putString(SAVED_PLACES_KEY, json).apply()
+    }
+    
+    fun savePlaces(newPlaces: List<SavedPlace>): Int {
+        val places = getAllPlaces().toMutableList()
+        val existingIds = places.map { it.id }.toSet()
+        var addedCount = 0
+        for (place in newPlaces) {
+            if (place.id !in existingIds) {
+                places.add(place)
+                addedCount++
+            }
+        }
+        if (addedCount > 0) {
+            val json = gson.toJson(places)
+            sharedPreferences.edit().putString(SAVED_PLACES_KEY, json).apply()
+        }
+        return addedCount
     }
     
     fun createPlace(name: String, latitude: Double, longitude: Double): SavedPlace {
