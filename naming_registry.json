@@ -1,0 +1,20 @@
+{
+  "project_name": "Sxcution",
+  "layouts": {
+    "activity_main": {
+      "tv_banner_title": "Banner title TextView that shows the active saved place name or Selected Location",
+      "status_text": "TextView that shows location service running or stopped status",
+      "btn_start_stop": "Button to start or stop location service",
+      "btn_smart_set_save": "Button to save the currently selected place",
+      "btn_saved_places": "Button to open the list of saved places",
+      "address_preview": "TextView displaying coordinates or address under the map panel",
+      "btn_my_location": "Button to center the map on the user's real location",
+      "btn_settings": "Button to open app settings dialog"
+    }
+  },
+  "variables": {
+    "selectedPlaceName": "The name of the saved place currently active or selected by the user",
+    "targetLocation": "The active mock location targeted by the mock GPS service",
+    "isLocationServiceRunning": "Boolean flag tracking the running state of the mock service"
+  }
+}

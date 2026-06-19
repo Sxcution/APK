@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sxcution</string>
+    <string name="google_maps_key">AIzaSyA_P6kvQEdanRZufKUGvEmC_SFdty8xW4Q</string>
+    
+    <!-- Main Activity -->
+    <string name="welcome_title">Sxcution</string>
+    <string name="welcome_subtitle">Location Management Tool</string>
+    <string name="start_location">Start</string>
+    <string name="stop_location">Stop</string>
+    <string name="select_location">Select Location</string>
+    <string name="current_location">Current Location</string>
+    <string name="target_location">Target Location</string>
+    <string name="location_service_running">Location Service Running</string>
+    <string name="location_service_stopped">Location Service Stopped</string>
+    <string name="getting_location">Getting location...</string>
+    <string name="select_location_on_map">Tap on map to select location</string>
+    
+    <!-- Map Activity -->
+    <string name="map_title">Select Target Location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="search_place">Search for a place...</string>
+    <string name="my_location">My Location</string>
+    
+    <!-- History -->
+    <string name="history_title">Location History</string>
+    <string name="clear_history">Clear History</string>
+    <string name="no_history">No location history found</string>
+    
+    <!-- Favorites -->
+    <string name="favorites_title">Favorite Locations</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="no_favorites">No favorite locations</string>
+    
+    <!-- Status -->
+    <string name="status_stopped">Location Service Stopped</string>
+    <string name="status_running">Location Service Running</string>
+    <string name="status_connecting">Connecting...</string>
+    
+    <!-- Permissions -->
+    <string name="permission_location_title">Location Permission Required</string>
+    <string name="permission_location_message">This app needs location permission to work properly.</string>
+    <string name="permission_grant">Grant Permission</string>
+    <string name="permission_deny">Deny</string>
+    
+    <!-- Errors -->
+    <string name="error_location_not_found">Location not found</string>
+    <string name="error_permission_denied">Permission denied</string>
+    <string name="error_network">Network error</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="share">Share</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_accuracy">Location Accuracy</string>
+    <string name="settings_update_interval">Update Interval</string>
+    <string name="settings_auto_start">Auto Start</string>
+    
+    <!-- Notifications -->
+    <string name="notification_channel_name">Location Service</string>
+    <string name="notification_channel_description">Location tracking service</string>
+    <string name="stop">Stop</string>
+    
+    <!-- Toast Messages -->
+    <string name="toast_started">Location service started</string>
+    <string name="toast_stopped">Location service stopped</string>
+    <string name="toast_location_permission_required">Location permission is required for app to work</string>
+    <string name="toast_permissions_denied">Some permissions denied - app may not work properly</string>
+    <string name="toast_map_fragment_not_found">Map fragment not found in layout</string>
+    <string name="toast_error_initializing_map">Error initializing map: %s</string>
+    <string name="toast_current_location_found">Current location found</string>
+    <string name="toast_unable_get_location">Unable to get current location</string>
+    <string name="toast_location_permission_not_granted">Location permission not granted</string>
+    <string name="toast_map_fragment_not_found_short">Map fragment not found</string>
+    <string name="toast_error_setting_up_map">Error setting up map: %s</string>
+    <string name="toast_location_permission_required_map">Location permission required to display map</string>
+    <string name="toast_error_map_ready">Error in onMapReady: %s</string>
+    <string name="toast_select_location_first">Please select a location on the map first</string>
+    <string name="toast_restored_last_position">Restored last position</string>
+    <string name="toast_location_saved">Location saved: %s</string>
+    <string name="toast_enter_location_name">Please enter a location name</string>
+    <string name="toast_moved_to">Moved to: %s</string>
+    <string name="toast_select_location_first_short">Please select a location first</string>
+    <string name="toast_movement_simulation_started">Movement simulation started</string>
+    <string name="toast_movement_simulation_stopped">Movement simulation stopped</string>
+    
+    <!-- Settings Dialog -->
+    <string name="movement_simulation">Movement Simulation</string>
+    <string name="movement_speed">Speed</string>
+    <string name="zoom_with_marker">Zoom with Marker</string>
+    <string name="bearing_rotation">Rotate Arrow</string>
+    <string name="close">Close</string>
+    
+</resources>

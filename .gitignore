@@ -1,0 +1,24 @@
+# Built artifacts
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Android Studio and Gradle files
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+
+# Log files
+*.log
+
+# Keystore files (for safety, though keystores are sometimes versioned, usually it's best to exclude or be careful)
+# For this project, you have release.jks in app/ folder. 
+# Do you want to push release.jks to Git? Typically we do NOT push private keystores to public GitHub.
+# Let's keep it commented or exclude it based on best practice.
+# app/release.jks
