@@ -947,19 +947,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     /**
      * Stop circular movement simulation
      */
-    private fun stopMovementSimulation() {
+    private fun stopMovementSimulation(showToast: Boolean = true) {
         movementSimulationRunnable?.let { runnable ->
             movementSimulationHandler?.removeCallbacks(runnable)
         }
         movementSimulationHandler = null
         movementSimulationRunnable = null
-        Toast.makeText(this, "Movement simulation stopped", Toast.LENGTH_SHORT).show()
+        if (showToast) {
+            Toast.makeText(this, "Movement simulation stopped", Toast.LENGTH_SHORT).show()
+        }
     }
     
     
     override fun onDestroy() {
         super.onDestroy()
-        stopMovementSimulation()
+        stopMovementSimulation(showToast = false)
         
         // Save current position only when app is completely destroyed
         if (::googleMap.isInitialized && targetLocation != null) {
