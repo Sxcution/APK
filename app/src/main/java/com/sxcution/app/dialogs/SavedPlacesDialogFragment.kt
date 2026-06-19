@@ -88,11 +88,32 @@ class SavedPlacesDialogFragment : DialogFragment() {
     
     override fun onStart() {
         super.onStart()
-        // Set dialog window dimensions
         dialog?.window?.let { window ->
             val params = window.attributes
-            params.width = (resources.displayMetrics.widthPixels * 0.8).toInt()
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            params.width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+            
+            val totalPlaces = repository.getAllPlaces().size
+            if (totalPlaces > 4) {
+                params.height = (resources.displayMetrics.heightPixels * 0.65).toInt()
+                view?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+                rvSavedPlaces.layoutParams?.let { lp ->
+                    if (lp is LinearLayout.LayoutParams) {
+                        lp.height = 0
+                        lp.weight = 1f
+                        rvSavedPlaces.layoutParams = lp
+                    }
+                }
+            } else {
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                view?.layoutParams?.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                rvSavedPlaces.layoutParams?.let { lp ->
+                    if (lp is LinearLayout.LayoutParams) {
+                        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        lp.weight = 0f
+                        rvSavedPlaces.layoutParams = lp
+                    }
+                }
+            }
             window.attributes = params
         }
     }
@@ -113,20 +134,7 @@ class SavedPlacesDialogFragment : DialogFragment() {
     }
     
     private fun setupPagination() {
-        btnPrevPage.setOnClickListener {
-            if (currentPage > 0) {
-                currentPage--
-                updatePage()
-            }
-        }
-        
-        btnNextPage.setOnClickListener {
-            val totalPages = if (allPlaces.isEmpty()) 1 else ((allPlaces.size - 1) / placesPerPage) + 1
-            if (currentPage < totalPages - 1) {
-                currentPage++
-                updatePage()
-            }
-        }
+        // Pagination is disabled for grouped list
     }
     
     private fun setupCloseButton() {
@@ -137,25 +145,8 @@ class SavedPlacesDialogFragment : DialogFragment() {
     
     private fun loadPlaces() {
         allPlaces = repository.getAllPlaces()
-        currentPage = 0
-        updatePage()
-    }
-    
-    private fun updatePage() {
-        val totalPages = if (allPlaces.isEmpty()) 1 else ((allPlaces.size - 1) / placesPerPage) + 1
-        val startIndex = currentPage * placesPerPage
-        val endIndex = minOf(startIndex + placesPerPage, allPlaces.size)
-        val pagePlaces = allPlaces.subList(startIndex, endIndex)
-        
-        adapter.updatePlaces(pagePlaces)
-        tvPageInfo.text = "${currentPage + 1} / $totalPages"
-        
-        // Show/hide pagination controls
-        paginationControls.visibility = if (totalPages > 1) View.VISIBLE else View.GONE
-        
-        // Enable/disable navigation buttons
-        btnPrevPage.isEnabled = currentPage > 0
-        btnNextPage.isEnabled = currentPage < totalPages - 1
+        adapter.updatePlaces(allPlaces)
+        paginationControls.visibility = View.GONE
     }
     
     private fun showDeleteConfirmation(place: SavedPlace) {

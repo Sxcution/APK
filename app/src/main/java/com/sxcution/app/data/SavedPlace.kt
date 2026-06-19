@@ -9,5 +9,6 @@ data class SavedPlace(
     val name: String,
     val latitude: Double,
     val longitude: Double,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val groupName: String? = null
 ) : Parcelable

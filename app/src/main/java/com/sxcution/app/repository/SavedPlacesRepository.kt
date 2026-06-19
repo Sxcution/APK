@@ -54,12 +54,34 @@ class SavedPlacesRepository(private val context: Context) {
         return addedCount
     }
     
-    fun createPlace(name: String, latitude: Double, longitude: Double): SavedPlace {
+    fun createPlace(name: String, latitude: Double, longitude: Double, groupName: String? = null): SavedPlace {
         return SavedPlace(
             id = UUID.randomUUID().toString(),
             name = name,
             latitude = latitude,
-            longitude = longitude
+            longitude = longitude,
+            groupName = groupName
         )
+    }
+
+    fun getGroups(): List<String> {
+        val json = sharedPreferences.getString("saved_groups_list", null) ?: return listOf("Default")
+        val type = object : TypeToken<List<String>>() {}.type
+        val groups: List<String> = gson.fromJson(json, type) ?: listOf("Default")
+        if ("Default" !in groups) {
+            return listOf("Default") + groups
+        }
+        return groups
+    }
+
+    fun addGroup(name: String): Boolean {
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) return false
+        val groups = getGroups().toMutableList()
+        if (trimmed.lowercase() in groups.map { it.lowercase() }) return false
+        groups.add(trimmed)
+        val json = gson.toJson(groups)
+        sharedPreferences.edit().putString("saved_groups_list", json).apply()
+        return true
     }
 }

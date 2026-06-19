@@ -715,6 +715,51 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val tvAddressPreview = dialogView.findViewById<TextView>(R.id.tv_address_preview)
         val btnSave = dialogView.findViewById<Button>(R.id.btn_save)
         val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+        val spGroupSelect = dialogView.findViewById<android.widget.Spinner>(R.id.sp_group_select)
+        val btnAddGroup = dialogView.findViewById<Button>(R.id.btn_add_group)
+        
+        // Helper to update Group Spinner
+        val updateGroupSpinner = { selectedGroupName: String? ->
+            val groups = savedPlacesRepository.getGroups()
+            val adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_item, groups)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spGroupSelect.adapter = adapter
+            
+            selectedGroupName?.let {
+                val index = groups.indexOf(it)
+                if (index != -1) {
+                    spGroupSelect.setSelection(index)
+                }
+            }
+        }
+        
+        // Load initial groups
+        updateGroupSpinner(null)
+        
+        // Add Group click listener
+        btnAddGroup.setOnClickListener {
+            val inputEdit = EditText(this)
+            inputEdit.hint = "Group name"
+            inputEdit.setPadding(32, 16, 32, 16)
+            
+            AlertDialog.Builder(this)
+                .setTitle("Add Group")
+                .setView(inputEdit)
+                .setPositiveButton("Create") { _, _ ->
+                    val newGroupName = inputEdit.text.toString().trim()
+                    if (newGroupName.isNotEmpty()) {
+                        val added = savedPlacesRepository.addGroup(newGroupName)
+                        if (added) {
+                            updateGroupSpinner(newGroupName)
+                            Toast.makeText(this, "Group created: $newGroupName", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Group already exists or is invalid", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
         
         // Hiển thị địa chỉ ngay lập tức
         lifecycleScope.launch {
@@ -733,15 +778,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         btnSave.setOnClickListener {
             val placeName = etPlaceName.text.toString().trim()
             if (placeName.isNotEmpty()) {
+                val selectedGroup = spGroupSelect.selectedItem?.toString() ?: "Default"
                 val savedPlace = savedPlacesRepository.createPlace(
                     placeName, 
                     location.latitude, 
-                    location.longitude
+                    location.longitude,
+                    selectedGroup
                 )
                 savedPlacesRepository.savePlace(savedPlace)
                 selectedPlaceName = placeName
                 updateUI()
-                Toast.makeText(this, "Location saved: $placeName", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Location saved to $selectedGroup: $placeName", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             } else {
                 Toast.makeText(this, "Please enter a location name", Toast.LENGTH_SHORT).show()
