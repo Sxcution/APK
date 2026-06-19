@@ -640,7 +640,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val latDiff = abs(place.latitude - latLng.latitude)
                 val lngDiff = abs(place.longitude - latLng.longitude)
                 if (latDiff < 0.0001 && lngDiff < 0.0001) {
-                    return place.name
+                    val group = place.groupName ?: "Default"
+                    return "$group: ${place.name}"
                 }
             }
         } catch (e: Exception) {
@@ -786,7 +787,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     selectedGroup
                 )
                 savedPlacesRepository.savePlace(savedPlace)
-                selectedPlaceName = placeName
+                selectedPlaceName = "$selectedGroup: $placeName"
                 updateUI()
                 Toast.makeText(this, "Location saved to $selectedGroup: $placeName", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -863,8 +864,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     bearing = 0f
                 }
                 
-                selectedPlaceName = place.name
-                setTargetMarker(latLng, place.name)
+                val group = place.groupName ?: "Default"
+                selectedPlaceName = "$group: ${place.name}"
+                setTargetMarker(latLng, selectedPlaceName ?: place.name)
                 
                 // Move camera to the location
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, currentZoomLevel))
